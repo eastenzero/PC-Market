@@ -1,0 +1,13 @@
+pc-parts-admin/node_modules/
+pc-parts-admin/dist/
+pc-parts-admin/.vite/
+
+pc-parts-management/target/
+
+.idea/
+.vscode/
+*.iml
+
+*.log
+.DS_Store
+Thumbs.db
