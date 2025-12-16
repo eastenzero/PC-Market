@@ -3,6 +3,7 @@ import { reactive, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { ElMessage } from 'element-plus'
 import type { FormInstance, FormRules } from 'element-plus'
+import { User, Lock, ArrowRight } from '@element-plus/icons-vue'
 import { useAuthStore } from '@/stores/auth'
 
 const router = useRouter()
@@ -40,72 +41,212 @@ async function onSubmit() {
 </script>
 
 <template>
-  <div class="login">
-    <el-card class="login-card" shadow="never">
-      <div class="login-brand">
-        <div class="login-title">PC配件销售管理系统</div>
-        <div class="login-subtitle">请使用管理员账号登录以继续</div>
+  <div class="login-container">
+    <!-- Atmospheric Background Orbs -->
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+
+    <transition name="card-entry" appear>
+      <div class="login-box">
+        <el-card class="login-card" :body-style="{ padding: '0' }">
+          <div class="login-content">
+            <div class="brand-area">
+              <div class="logo-circle">
+                <span class="logo-text">PC</span>
+              </div>
+              <h1 class="app-title">Parts Admin</h1>
+              <p class="app-subtitle">销售管理系统</p>
+            </div>
+
+            <el-form
+              class="login-form"
+              ref="formRef"
+              :model="form"
+              :rules="rules"
+              @keyup.enter="onSubmit"
+            >
+              <el-form-item prop="username">
+                <el-input 
+                  v-model="form.username" 
+                  size="large" 
+                  placeholder="用户名"
+                  :prefix-icon="User"
+                  class="glass-input"
+                />
+              </el-form-item>
+              
+              <el-form-item prop="password">
+                <el-input
+                  v-model="form.password"
+                  size="large"
+                  type="password"
+                  show-password
+                  placeholder="密码"
+                  :prefix-icon="Lock"
+                  class="glass-input"
+                />
+              </el-form-item>
+
+              <div class="form-actions">
+                <el-button 
+                  size="large" 
+                  type="primary" 
+                  :loading="loading" 
+                  class="submit-btn" 
+                  @click="onSubmit"
+                >
+                  <span>登 录</span>
+                  <el-icon class="btn-icon"><ArrowRight /></el-icon>
+                </el-button>
+              </div>
+            </el-form>
+          </div>
+        </el-card>
+        
+        <div class="login-footer">
+          &copy; 2025 PC Parts Inc.
+        </div>
       </div>
-      <el-form
-        class="login-form"
-        ref="formRef"
-        :model="form"
-        :rules="rules"
-        label-position="top"
-        @keyup.enter="onSubmit"
-      >
-        <el-form-item label="用户名" prop="username">
-          <el-input v-model="form.username" size="large" autocomplete="username" />
-        </el-form-item>
-        <el-form-item label="密码" prop="password">
-          <el-input
-            v-model="form.password"
-            size="large"
-            type="password"
-            show-password
-            autocomplete="current-password"
-          />
-        </el-form-item>
-        <el-button size="large" type="primary" :loading="loading" style="width: 100%" @click="onSubmit">
-          登录
-        </el-button>
-      </el-form>
-    </el-card>
+    </transition>
   </div>
 </template>
 
 <style scoped>
-.login {
-  height: 100vh;
+.login-container {
+  min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: var(--sp-4) var(--sp-2);
-  background: transparent;
+  position: relative;
+  overflow: hidden;
+  /* Ensure global background shows through, but we add local orbs */
+}
+
+/* Atmospheric Orbs */
+.orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  z-index: 0;
+  opacity: 0.6;
+}
+
+.orb-1 {
+  width: 300px;
+  height: 300px;
+  background: radial-gradient(circle, rgba(0,122,255,0.4) 0%, rgba(0,122,255,0) 70%);
+  top: 20%;
+  left: 30%;
+  animation: float 10s ease-in-out infinite;
+}
+
+.orb-2 {
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, rgba(175,82,222,0.3) 0%, rgba(175,82,222,0) 70%);
+  bottom: 10%;
+  right: 20%;
+  animation: float 14s ease-in-out infinite reverse;
+}
+
+@keyframes float {
+  0%, 100% { transform: translate(0, 0); }
+  50% { transform: translate(-30px, 40px); }
+}
+
+.login-box {
+  position: relative;
+  z-index: 10;
+  width: 100%;
+  max-width: 400px;
+  padding: 20px;
 }
 
 .login-card {
-  width: min(420px, calc(100vw - 32px));
+  --el-card-border-radius: 24px;
+  /* Card itself inherits global glass styles from style.css (.el-card) */
+  /* We just add specific layout tweaks */
+  overflow: hidden;
 }
 
-.login-card :deep(.el-card__body) {
-  padding: var(--sp-3);
+.login-content {
+  padding: 40px 32px;
 }
 
-.login-title {
-  font-size: 20px;
+.brand-area {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.logo-circle {
+  width: 64px;
+  height: 64px;
+  background: linear-gradient(135deg, #007aff, #5856d6);
+  border-radius: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 20px;
+  box-shadow: 0 10px 20px rgba(0, 122, 255, 0.3);
+  color: white;
+  font-weight: 800;
+  font-size: 24px;
+}
+
+.app-title {
+  margin: 0;
+  font-size: 26px;
   font-weight: 700;
-  letter-spacing: -0.2px;
-  margin-bottom: 4px;
+  letter-spacing: -0.5px;
+  color: var(--app-text);
 }
 
-.login-subtitle {
-  font-size: 14px;
+.app-subtitle {
+  margin: 6px 0 0;
+  font-size: 15px;
   color: var(--app-text-2);
-  margin-bottom: var(--sp-3);
+  letter-spacing: -0.2px;
 }
 
-.login-form :deep(.el-form-item) {
-  margin-bottom: var(--sp-2);
+.login-form {
+  margin-top: 32px;
+}
+
+.glass-input {
+  /* Input styles are globally handled in style.css */
+  /* Just ensuring margin/spacing via form-item */
+}
+
+/* Button Customization for Login */
+.submit-btn {
+  width: 100%;
+  height: 48px; /* Taller touch target */
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  margin-top: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.login-footer {
+  text-align: center;
+  margin-top: 24px;
+  font-size: 12px;
+  color: var(--app-text-3);
+  font-weight: 500;
+}
+
+/* Entry Animation */
+.card-entry-enter-active {
+  transition: all 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.card-entry-enter-from {
+  opacity: 0;
+  transform: translateY(30px) scale(0.95);
+  filter: blur(10px);
 }
 </style>

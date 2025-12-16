@@ -126,7 +126,9 @@ async function onLogout() {
       <el-main class="layout-main">
         <router-view v-slot="{ Component }">
           <transition name="app-page" mode="out-in">
-            <component :is="Component" />
+            <div>
+              <component :is="Component" />
+            </div>
           </transition>
         </router-view>
       </el-main>

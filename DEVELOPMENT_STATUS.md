@@ -21,15 +21,15 @@
 | 商品（SPU）管理 | ✅ | ✅ | 已实现 `ProductList` 页面 + `api/product` + `types/product` |
 | SKU 管理 | ✅ | ✅ | 已实现 `SkuList` 页面 + `api/sku` + `types/sku` |
 | 仓库管理 | ✅ | ✅ | 已实现 `WarehouseList` 页面 + `api/warehouse` + `types/warehouse` |
-| 库存查询 | ✅ | ❌ | 路由仍为 `Placeholder.vue`；缺前端页面与 API |
-| 入库（手工入库） | ✅ | ❌ | 路由仍为 `Placeholder.vue`；缺前端页面与 API |
-| 出库（手工出库） | ✅ | ❌ | 路由仍为 `Placeholder.vue`；缺前端页面与 API |
-| 库存流水 | ✅ | ❌ | 路由仍为 `Placeholder.vue`；缺前端页面与 API |
-| 供应商管理 | ✅ | ❌ | 路由仍为 `Placeholder.vue`；缺前端页面与 API |
-| 客户管理 | ✅ | ❌ | 路由仍为 `Placeholder.vue`；缺前端页面与 API |
-| 采购订单 | ✅ | ❌ | 路由仍为 `Placeholder.vue`；缺前端页面与 API |
-| 销售订单/收款/出库 | ✅ | ❌ | 路由仍为 `Placeholder.vue`；缺前端页面与 API |
-| 系统管理（用户/角色） | ✅ | ❌ | 后端已补齐 `/api/system/users`、`/api/system/roles`；前端页面仍占位 |
+| 库存查询 | ✅ | ✅ | 已实现 `StockList` 页面 + `api/stock` + `types/stock` |
+| 入库（手工入库） | ✅ | ✅ | 已实现 `StockInbound` 页面 + `api/stock` + `types/stock` |
+| 出库（手工出库） | ✅ | ✅ | 已实现 `StockOutbound` 页面 + `api/stock` + `types/stock` |
+| 库存流水 | ✅ | ✅ | 已实现 `StockMovements` 页面 + `api/stock` + `types/stock` |
+| 供应商管理 | ✅ | ✅ | 已实现 `SupplierList` 页面 + `api/supplier` + `types/supplier` |
+| 客户管理 | ✅ | ✅ | 已实现 `CustomerList` 页面 + `api/customer` + `types/customer` |
+| 采购订单 | ✅ | ✅ | 已实现 `PurchaseOrderList` 页面 + `api/purchaseOrder` + `types/purchaseOrder` |
+| 销售订单/收款/出库 | ✅ | ✅ | 已实现 `SalesOrderList` 页面 + `api/salesOrder` + `types/salesOrder` |
+| 系统管理（用户/角色） | ✅ | ✅ | 已实现 `UserList`/`RoleList` 页面 + `api/systemUser`/`api/systemRole` + `types/systemUser`/`types/systemRole` |
 
 ## 待办清单（按优先级）
 
@@ -44,10 +44,10 @@
 ### P1（核心业务链路）
 
 - [x] 前端：仓库管理（页面 + API + types）
-- [ ] 前端：库存查询 / 入库 / 出库 / 库存流水（页面 + API + types）
-- [ ] 前端：供应商/客户管理（页面 + API + types）
-- [ ] 前端：采购订单（列表/新建/收货）
-- [ ] 前端：销售订单（列表/新建/收款/发货）
+- [x] 前端：库存查询 / 入库 / 出库 / 库存流水（页面 + API + types）
+- [x] 前端：供应商/客户管理（页面 + API + types）
+- [x] 前端：采购订单（列表/新建/收货）
+- [x] 前端：销售订单（列表/新建/收款/发货）
 
 ### P2（体验与完善）
 
@@ -61,3 +61,8 @@
 - 2025-12-15：完成前端分类管理页面与接口封装。
 - 2025-12-15：完成前端商品（SPU）与 SKU 管理页面与接口封装。
 - 2025-12-15：完成前端仓库管理页面与接口封装。
+- 2025-12-15：完成前端库存查询/入库/出库/库存流水页面与接口封装。
+- 2025-12-15：完成前端供应商/客户管理页面与接口封装。
+- 2025-12-15：完成前端采购订单/销售订单页面与接口封装。
+- 2025-12-15：完成前端系统管理（用户/角色）页面与接口封装。
+- 2025-12-15：基础验证通过：前端 `npm run build` 成功；后端 `mvn -DskipTests package` 成功。

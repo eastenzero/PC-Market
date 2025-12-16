@@ -1,0 +1,79 @@
+你是一名资深前端架构师，擅长 Vue 3 + TypeScript + 电商 Web 应用。
+
+# 1. 目标
+新建一个【用户端商城】前端项目：pc-parts-mall（独立于管理端 pc-parts-admin）。
+要求可直接运行：npm install && npm run dev。
+
+# 2. 技术栈约束（必须）
+- Vue 3 + Vite + TypeScript
+- Vue Router
+- Pinia（购物车、登录状态持久化到 localStorage）
+- UI：Element Plus（做出"商城感"的顶部导航/商品卡片/详情页布局）
+- Axios
+
+# 3. 后端接口约定（必须）
+- baseURL：/api（开发时用 vite proxy 转发到 http://localhost:8080）
+- 统一响应：{ code, message, data }；code===0 返回 data，否则提示错误
+- 账号与 Mall 接口：
+  - POST /api/mall/auth/register
+  - POST /api/auth/login
+  - GET /api/mall/auth/me
+  - GET /api/mall/categories
+  - GET /api/mall/products
+  - GET /api/mall/products/{id}
+  - POST /api/mall/orders
+  - GET /api/mall/orders
+  - GET /api/mall/orders/{id}
+  - POST /api/mall/orders/{id}/pay
+- Axios request interceptor：有 token 就带 Authorization: Bearer <token>
+- Axios response interceptor：401 自动清 token 并跳 /login
+
+# 4. 页面与路由（必须）
+- / （首页）
+  - 顶部导航：Logo、搜索框、登录/注册/退出、购物车入口、我的订单入口
+  - 分类快捷入口（从 /api/mall/categories 拉取）
+  - 推荐商品区（可复用商品列表组件）
+- /products（商品列表）
+  - keyword 搜索 + categoryId 过滤
+  - 商品卡片：名称、品牌、最低价、查看详情、加入购物车
+  - 分页
+- /products/:id（商品详情）
+  - 展示商品信息 + SKU 列表（价格、规格）
+  - 选择 SKU + 数量 -> 加入购物车
+- /cart（购物车）
+  - 本地持久化
+  - 数量增减、删除、清空、总价
+  - 去结算按钮（未登录则跳 /login?redirect=/checkout）
+- /checkout（结算）
+  - 不需要收货地址
+  - 展示清单与总价，可填 remark
+  - 提交订单：POST /api/mall/orders（items 只传 skuId + quantity）
+  - 成功后跳转 /orders/:id
+- /orders（我的订单）
+  - 需要登录
+  - 分页 + 状态筛选（待支付/已支付/已发货）
+- /orders/:id（订单详情）
+  - 展示订单号、状态、金额、明细
+  - 若待支付，提供"支付"按钮（选择 payMethod：ALIPAY/WECHAT/CARD），调用 /pay
+- /login（登录）
+- /register（注册）
+
+# 5. 体验要求（必须）
+- 任何接口失败都要有明确提示（ElMessage），不允许白屏
+- loading / empty 状态齐全
+- 金额统一格式化两位小数
+- 路由守卫：需要登录的页面（checkout、orders）做拦截
+
+# 6. 工程结构（必须）
+- src/api/http.ts + mallAuth.ts mallCatalog.ts mallOrder.ts
+- src/stores/auth.ts cart.ts
+- src/router/index.ts（含守卫）
+- src/components：ProductCard、SkuSelector、QuantityInput 等
+- src/views：按页面拆分
+- vite.config.ts：配置 proxy: '/api' -> 'http://localhost:8080'
+
+# 7. 输出格式
+- 先输出文件树
+- 再逐个文件输出完整代码（不要用 ... 省略）
+- 给 README：启动方式、默认后端地址、测试流程（注册->登录->加购->下单->支付->看订单）
+现在开始生成 pc-parts-mall。

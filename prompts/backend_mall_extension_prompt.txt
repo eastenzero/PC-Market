@@ -1,0 +1,96 @@
+你是一名资深 Java 架构师与 Spring Boot 3.x 工程师。现在有一个已完成的后台管理系统后端项目：pc-parts-management（Spring Boot + MyBatis-Plus + Flyway + Spring Security + JWT），统一响应结构为 ApiResponse {code,message,data}。
+
+# 1. 目标
+在【不重写现有后台功能】的前提下，为项目新增【用户端商城（Mall）】所需的后端能力：
+- 用户端账号体系：注册/登录/获取当前用户信息
+- 用户端商品浏览接口（只读、可匿名）
+- 用户端下单与我的订单（需登录）
+- 不需要收货地址
+
+要求：
+- 直接在现有代码结构中新增/修改必要类与配置
+- 给出你修改/新增的文件清单，并输出每个文件的完整代码（不要省略）
+- 代码风格与项目现有一致
+- 确保 mvn test / mvn spring-boot:run 可运行
+
+# 2. 现有约束（必须遵守）
+- JWT 实现已存在（JwtService + JwtAuthenticationFilter）
+- 认证入口已存在：POST /api/auth/login（登录） + GET /api/auth/me（获取当前登录用户）
+- SecurityConfig 当前为 "除 /api/auth/login 外均需认证"，你需要按 Mall 需求调整
+- 数据库采用 Flyway 管理：src/main/resources/db/migration
+
+# 3. Mall 账号体系设计（必须做"注册"）
+不要另起一套 JWT 机制，复用现有 sys_user / sys_role / sys_user_role 与 /api/auth/login 登录链路。
+新增一个角色：CUSTOMER（用户端账号的角色）
+
+用户端注册接口（新增）：
+- POST /api/mall/auth/register
+  body: { username, password, nickname?, phone?, email? }
+  规则：
+  - username 唯一（deleted=0 范围内）
+  - password 使用 PasswordEncoder 加密（BCrypt delegating）
+  - 注册成功后创建 sys_user，并绑定 CUSTOMER 角色
+  - 同时创建 customer 记录（用于 sales_order.customer_id 外键）
+  - 由于不需要收货地址，不做地址字段要求
+
+为了把 sys_user 与 customer 关联起来，请新增字段：
+- customer 表新增 user_id BIGINT（指向 sys_user.id），并建立唯一约束 (user_id, deleted)
+- Flyway 新增迁移文件，例如 V4__mall_customer_account.sql（包含：插入 CUSTOMER 角色；customer 表加 user_id；必要索引/外键）
+
+并新增一个 Mall 用户信息接口：
+- GET /api/mall/auth/me
+  返回：当前登录用户的 customerId、username、nickname、phone、email
+
+# 4. Mall 商品浏览（匿名可访问）
+新增一组"Mall 专用"只读接口，避免暴露管理端字段（例如 SKU cost 成本价不能给用户端）：
+- GET /api/mall/categories  （可分页或直接返回树/列表，至少支持 keyword/parentId）
+- GET /api/mall/products?page=&size=&keyword=&categoryId=&brandId=
+- GET /api/mall/products/{id}
+- GET /api/mall/products/{id}/skus  或在 products/{id} 里带 skus
+
+返回 VO 要求（示例）：
+- MallSkuVO：id, productId, skuCode, name, specJson, price, status（禁止返回 cost）
+- MallProductVO：id, name, brandName, categoryName, description, status, minPrice, skus(可选)
+
+数据过滤要求：
+- 只返回 deleted=0 且 status=1 的商品/SKU
+
+# 5. Mall 下单与我的订单（必须）
+新增用户端订单接口（路径与后台管理接口隔离）：
+- POST /api/mall/orders
+  body: { items: [{ skuId, quantity }], remark? }
+  规则：
+  - 必须登录且角色为 CUSTOMER
+  - 后端必须"以数据库 sku.price 为准"计算价格，不信任前端传 price
+  - 创建 sales_order + sales_order_item（可复用现有 SalesOrderService，但要提供一个 mall 专用创建方法来组装 price）
+  - sales_order.customer_id 使用当前登录用户关联的 customer.id
+- GET /api/mall/orders?page=&size=&status=
+  仅返回"我的订单"（按 customerId 过滤）
+- GET /api/mall/orders/{id}
+  仅允许访问自己的订单
+- POST /api/mall/orders/{id}/pay
+  body: { payMethod, remark? }
+  规则：
+  - amount 默认等于应付金额（total - paid），后端自行计算更安全
+  - 支付后将订单置为已支付（复用/参考现有 SalesOrderService.pay，但要校验订单归属）
+
+订单状态沿用现有：
+0=CREATED(待支付) 1=PAID(已支付) 2=SHIPPED(已发货)
+
+# 6. 安全策略调整（必须）
+修改 SecurityConfig，实现：
+- permitAll：
+  - /api/auth/login
+  - /api/mall/auth/register
+  - /api/mall/categories/** /api/mall/products/** （用户端浏览）
+- /api/mall/**（除上述 permitAll 外）：
+  - 必须 hasRole('CUSTOMER')
+- /api/**（管理端接口）：
+  - 必须 hasAnyRole('ADMIN','SALES','WAREHOUSE','FINANCE')
+- /api/auth/me：
+  - 允许任意已登录用户访问（admin 与 customer 都可）
+
+# 7. 输出要求
+- 输出"修改/新增文件清单"
+- 每个文件给出完整代码
+- 给出接口自测示例（curl）：注册、登录、匿名拉商品、登录后下单、查询我的订单
