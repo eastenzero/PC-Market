@@ -6,8 +6,10 @@ pc-parts-admin/src/assets/images/
 pc-parts-management/target/
 
 # local mall UI reference / copies (keep out of git)
-PC 配件商城 UI 设计/
-电脑配件销售管理系统设计copy/
+## Unignored to allow local development edits via IDE tooling
+pc-parts-sales-management-system-copy/
+
+pc-parts-mall-ui-design/
 
 # prompts (optional)
 prompts/figma_mall_ui_prompt.txt
