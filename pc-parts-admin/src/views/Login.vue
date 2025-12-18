@@ -119,6 +119,7 @@ async function onSubmit() {
   justify-content: center;
   position: relative;
   overflow: hidden;
+  padding: 48px 16px;
   /* Ensure global background shows through, but we add local orbs */
 }
 
@@ -158,7 +159,7 @@ async function onSubmit() {
   position: relative;
   z-index: 10;
   width: 100%;
-  max-width: 400px;
+  max-width: 980px;
   padding: 20px;
 }
 
@@ -170,12 +171,25 @@ async function onSubmit() {
 }
 
 .login-content {
-  padding: 40px 32px;
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  min-height: 460px;
+  padding: 0;
 }
 
 .brand-area {
-  text-align: center;
-  margin-bottom: 40px;
+  text-align: left;
+  margin-bottom: 0;
+  padding: 48px 44px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 10px;
+  background:
+    radial-gradient(900px 500px at 0% 0%, rgba(0, 122, 255, 0.18), transparent 60%),
+    radial-gradient(900px 500px at 60% 100%, rgba(175, 82, 222, 0.12), transparent 55%);
+  border-right: 1px solid var(--app-divider);
 }
 
 .logo-circle {
@@ -186,7 +200,7 @@ async function onSubmit() {
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 0 auto 20px;
+  margin: 0 0 20px;
   box-shadow: 0 10px 20px rgba(0, 122, 255, 0.3);
   color: white;
   font-weight: 800;
@@ -195,7 +209,7 @@ async function onSubmit() {
 
 .app-title {
   margin: 0;
-  font-size: 26px;
+  font-size: 30px;
   font-weight: 700;
   letter-spacing: -0.5px;
   color: var(--app-text);
@@ -203,13 +217,25 @@ async function onSubmit() {
 
 .app-subtitle {
   margin: 6px 0 0;
-  font-size: 15px;
+  font-size: 16px;
   color: var(--app-text-2);
   letter-spacing: -0.2px;
 }
 
 .login-form {
-  margin-top: 32px;
+  margin-top: 0;
+  padding: 48px 44px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.login-form :deep(.el-form-item) {
+  margin-bottom: 18px;
+}
+
+.login-form :deep(.el-form-item:last-of-type) {
+  margin-bottom: 0;
 }
 
 .glass-input {
@@ -237,6 +263,32 @@ async function onSubmit() {
   font-size: 12px;
   color: var(--app-text-3);
   font-weight: 500;
+}
+
+@media (max-width: 768px) {
+  .login-box {
+    max-width: 420px;
+  }
+
+  .login-content {
+    grid-template-columns: 1fr;
+    min-height: unset;
+  }
+
+  .brand-area {
+    text-align: center;
+    align-items: center;
+    border-right: none;
+    border-bottom: 1px solid var(--app-divider);
+  }
+
+  .logo-circle {
+    margin: 0 auto 20px;
+  }
+
+  .login-form {
+    padding: 40px 32px;
+  }
 }
 
 /* Entry Animation */

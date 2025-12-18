@@ -30,7 +30,7 @@ const greeting = computed(() => {
     <div class="stats-grid">
       <el-card class="stat-card" shadow="never">
         <div class="stat-icon blue">
-          <img src="https://api.iconify.design/ri:user-star-line.svg?color=%23007aff" alt="icon" style="width:24px; opacity:0.8"/>
+          <img src="@/assets/images/user-icon.svg" alt="icon" style="width:24px; opacity:0.8"/>
         </div>
         <div class="stat-info">
           <div class="stat-label">当前用户</div>
@@ -74,6 +74,12 @@ const greeting = computed(() => {
 <style scoped>
 .dashboard {
   animation: fade-in 0.6s ease-out;
+  width: 100%;
+  max-width: 1280px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
 }
 
 @keyframes fade-in {
@@ -84,12 +90,15 @@ const greeting = computed(() => {
 .welcome-banner {
   position: relative;
   border-radius: var(--app-radius-lg);
-  background: linear-gradient(135deg, #007aff, #5ac8fa);
-  padding: 40px;
-  color: white;
+  background:
+    linear-gradient(135deg, rgba(0, 122, 255, 0.14), rgba(175, 82, 222, 0.10)),
+    var(--app-surface);
+  padding: 36px;
+  color: var(--app-text);
   overflow: hidden;
-  margin-bottom: var(--sp-3);
-  box-shadow: 0 10px 30px rgba(0, 122, 255, 0.25);
+  margin-bottom: 0;
+  box-shadow: var(--app-shadow-1), var(--app-glass-edge);
+  backdrop-filter: blur(var(--app-blur)) saturate(var(--app-saturate));
   /* Glass gloss overlay */
   isolation: isolate;
 }
@@ -101,14 +110,14 @@ const greeting = computed(() => {
 
 .welcome-text h1 {
   margin: 0;
-  font-size: 28px;
+  font-size: 30px;
   font-weight: 700;
   letter-spacing: -0.5px;
 }
 
 .welcome-text p {
   margin: 8px 0 0;
-  opacity: 0.9;
+  color: var(--app-text-2);
   font-size: 15px;
 }
 
@@ -125,8 +134,8 @@ const greeting = computed(() => {
 .circle {
   position: absolute;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(10px);
+  background: radial-gradient(circle, rgba(0, 122, 255, 0.22) 0%, rgba(0, 122, 255, 0) 70%);
+  filter: blur(0);
 }
 
 .c1 {
@@ -145,7 +154,7 @@ const greeting = computed(() => {
 
 .stats-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: var(--sp-2);
 }
 
@@ -162,12 +171,12 @@ const greeting = computed(() => {
 .stat-card :deep(.el-card__body) {
   display: flex;
   align-items: center;
-  padding: 24px;
+  padding: 20px;
 }
 
 .stat-icon {
-  width: 48px;
-  height: 48px;
+  width: 44px;
+  height: 44px;
   border-radius: 14px;
   display: flex;
   align-items: center;
@@ -192,7 +201,7 @@ const greeting = computed(() => {
 }
 
 .stat-value {
-  font-size: 18px;
+  font-size: 17px;
   font-weight: 700;
   color: var(--app-text);
   letter-spacing: -0.3px;
@@ -200,5 +209,29 @@ const greeting = computed(() => {
 
 .stat-value.small {
   font-size: 16px;
+}
+
+@media (max-width: 1024px) {
+  .welcome-banner {
+    padding: 28px;
+  }
+
+  .stats-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  .welcome-banner {
+    padding: 22px;
+  }
+
+  .welcome-text h1 {
+    font-size: 24px;
+  }
+
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
 }
 </style>

@@ -223,6 +223,15 @@ onMounted(async () => {
 
     <el-table :data="list" :loading="loading" style="width: 100%">
       <el-table-column prop="id" label="ID" width="80" />
+      <el-table-column label="图片" width="80">
+        <template #default>
+          <el-image
+            style="width: 40px; height: 40px; border-radius: 4px"
+            src="/src/assets/images/product-placeholder.png"
+            fit="cover"
+          />
+        </template>
+      </el-table-column>
       <el-table-column prop="spuCode" label="SPU编码" width="160" />
       <el-table-column prop="name" label="名称" min-width="180" />
       <el-table-column prop="categoryName" label="分类" width="140" />
