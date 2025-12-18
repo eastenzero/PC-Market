@@ -7,7 +7,7 @@ pc-parts-management/target/
 
 # local mall UI reference / copies (keep out of git)
 ## Unignored to allow local development edits via IDE tooling
-pc-parts-sales-management-system-copy/
+pc-parts-sales-management-system/
 
 pc-parts-mall-ui-design/
 
