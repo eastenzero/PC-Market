@@ -11,6 +11,10 @@ pc-parts-sales-management-system/
 
 pc-parts-mall-ui-design/
 
+pc-parts-mall-ui-design-src/node_modules/
+pc-parts-mall-ui-design-src/dist/
+pc-parts-mall-ui-design-src/.vite/
+
 # prompts (optional)
 prompts/figma_mall_ui_prompt.txt
 
