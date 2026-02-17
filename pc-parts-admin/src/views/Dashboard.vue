@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useAuthStore } from '@/stores/auth'
-import { Monitor, Goods, Timer } from '@element-plus/icons-vue'
+import { Monitor, Goods, Timer, User } from '@element-plus/icons-vue'
 
 const authStore = useAuthStore()
 
@@ -30,7 +30,7 @@ const greeting = computed(() => {
     <div class="stats-grid">
       <el-card class="stat-card" shadow="never">
         <div class="stat-icon blue">
-          <img src="@/assets/images/user-icon.svg" alt="icon" style="width:24px; opacity:0.8"/>
+          <el-icon><User /></el-icon>
         </div>
         <div class="stat-info">
           <div class="stat-label">当前用户</div>

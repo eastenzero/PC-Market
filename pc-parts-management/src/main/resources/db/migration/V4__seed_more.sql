@@ -421,7 +421,7 @@ WHERE w.deleted=0
 
 /* sales orders (a few demo orders) */
 INSERT INTO sales_order (order_no, customer_id, status, total_amount, paid_amount, remark, ordered_at)
-SELECT 'SO202512180001', c.id, 1, 2799.00, 2799.00, 'demo: i7 盒装', DATE_SUB(NOW(), INTERVAL 5 DAY)
+SELECT 'SO202512180001', c.id, 1, 2799.00, 2799.00, 'demo: i7 盒装', (NOW() - INTERVAL '5' DAY)
 FROM customer c
 WHERE c.name='张三' AND c.deleted=0
   AND NOT EXISTS (SELECT 1 FROM sales_order o WHERE o.order_no='SO202512180001' AND o.deleted=0);
@@ -437,13 +437,13 @@ WHERE o.order_no='SO202512180001' AND o.deleted=0
   );
 
 INSERT INTO payment_record (pay_no, sales_order_id, amount, pay_method, paid_at, remark)
-SELECT 'PAY202512180001', o.id, 2799.00, 'wechat', DATE_SUB(NOW(), INTERVAL 5 DAY), 'demo pay'
+SELECT 'PAY202512180001', o.id, 2799.00, 'wechat', (NOW() - INTERVAL '5' DAY), 'demo pay'
 FROM sales_order o
 WHERE o.order_no='SO202512180001' AND o.deleted=0
   AND NOT EXISTS (SELECT 1 FROM payment_record p WHERE p.pay_no='PAY202512180001' AND p.deleted=0);
 
 INSERT INTO sales_order (order_no, customer_id, status, total_amount, paid_amount, remark, ordered_at)
-SELECT 'SO202512180002', c.id, 0, 4199.00, 0.00, 'demo: RTX 4070', DATE_SUB(NOW(), INTERVAL 2 DAY)
+SELECT 'SO202512180002', c.id, 0, 4199.00, 0.00, 'demo: RTX 4070', (NOW() - INTERVAL '2' DAY)
 FROM customer c
 WHERE c.name='李四' AND c.deleted=0
   AND NOT EXISTS (SELECT 1 FROM sales_order o WHERE o.order_no='SO202512180002' AND o.deleted=0);
@@ -459,7 +459,7 @@ WHERE o.order_no='SO202512180002' AND o.deleted=0
   );
 
 INSERT INTO sales_order (order_no, customer_id, status, total_amount, paid_amount, remark, ordered_at)
-SELECT 'SO202512180003', c.id, 2, 2198.00, 2198.00, 'demo: SSD+内存', DATE_SUB(NOW(), INTERVAL 10 DAY)
+SELECT 'SO202512180003', c.id, 2, 2198.00, 2198.00, 'demo: SSD+内存', (NOW() - INTERVAL '10' DAY)
 FROM customer c
 WHERE c.name='王五' AND c.deleted=0
   AND NOT EXISTS (SELECT 1 FROM sales_order o WHERE o.order_no='SO202512180003' AND o.deleted=0);
@@ -485,7 +485,7 @@ WHERE o.order_no='SO202512180003' AND o.deleted=0
   );
 
 INSERT INTO payment_record (pay_no, sales_order_id, amount, pay_method, paid_at, remark)
-SELECT 'PAY202512180003', o.id, 2198.00, 'alipay', DATE_SUB(NOW(), INTERVAL 10 DAY), 'demo pay'
+SELECT 'PAY202512180003', o.id, 2198.00, 'alipay', (NOW() - INTERVAL '10' DAY), 'demo pay'
 FROM sales_order o
 WHERE o.order_no='SO202512180003' AND o.deleted=0
   AND NOT EXISTS (SELECT 1 FROM payment_record p WHERE p.pay_no='PAY202512180003' AND p.deleted=0);

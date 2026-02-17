@@ -13,13 +13,13 @@ CREATE TABLE sys_user (
   deleted tinyint(1) NOT NULL DEFAULT 0,
   created_at datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   created_by bigint DEFAULT NULL,
-  updated_at datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  updated_at datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   updated_by bigint DEFAULT NULL,
   PRIMARY KEY (id),
   UNIQUE KEY uk_sys_user_username_deleted (username, deleted),
   KEY idx_sys_user_phone (phone),
   KEY idx_sys_user_email (email)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+);
 
 CREATE TABLE sys_role (
   id bigint NOT NULL AUTO_INCREMENT,
@@ -29,11 +29,11 @@ CREATE TABLE sys_role (
   deleted tinyint(1) NOT NULL DEFAULT 0,
   created_at datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   created_by bigint DEFAULT NULL,
-  updated_at datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  updated_at datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   updated_by bigint DEFAULT NULL,
   PRIMARY KEY (id),
   UNIQUE KEY uk_sys_role_code_deleted (code, deleted)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+);
 
 CREATE TABLE sys_permission (
   id bigint NOT NULL AUTO_INCREMENT,
@@ -46,13 +46,13 @@ CREATE TABLE sys_permission (
   deleted tinyint(1) NOT NULL DEFAULT 0,
   created_at datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   created_by bigint DEFAULT NULL,
-  updated_at datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  updated_at datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   updated_by bigint DEFAULT NULL,
   PRIMARY KEY (id),
   UNIQUE KEY uk_sys_permission_code_deleted (code, deleted),
   KEY idx_sys_permission_parent_id (parent_id),
   CONSTRAINT fk_sys_permission_parent_id FOREIGN KEY (parent_id) REFERENCES sys_permission (id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+);
 
 CREATE TABLE sys_user_role (
   id bigint NOT NULL AUTO_INCREMENT,
@@ -61,14 +61,14 @@ CREATE TABLE sys_user_role (
   deleted tinyint(1) NOT NULL DEFAULT 0,
   created_at datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   created_by bigint DEFAULT NULL,
-  updated_at datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  updated_at datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   updated_by bigint DEFAULT NULL,
   PRIMARY KEY (id),
   UNIQUE KEY uk_sys_user_role_user_id_role_id_deleted (user_id, role_id, deleted),
   KEY idx_sys_user_role_role_id (role_id),
   CONSTRAINT fk_sys_user_role_user_id FOREIGN KEY (user_id) REFERENCES sys_user (id),
   CONSTRAINT fk_sys_user_role_role_id FOREIGN KEY (role_id) REFERENCES sys_role (id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+);
 
 CREATE TABLE sys_role_permission (
   id bigint NOT NULL AUTO_INCREMENT,
@@ -77,14 +77,14 @@ CREATE TABLE sys_role_permission (
   deleted tinyint(1) NOT NULL DEFAULT 0,
   created_at datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   created_by bigint DEFAULT NULL,
-  updated_at datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  updated_at datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   updated_by bigint DEFAULT NULL,
   PRIMARY KEY (id),
   UNIQUE KEY uk_sys_role_permission_role_id_permission_id_deleted (role_id, permission_id, deleted),
   KEY idx_sys_role_permission_permission_id (permission_id),
   CONSTRAINT fk_sys_role_permission_role_id FOREIGN KEY (role_id) REFERENCES sys_role (id),
   CONSTRAINT fk_sys_role_permission_permission_id FOREIGN KEY (permission_id) REFERENCES sys_permission (id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+);
 
 CREATE TABLE brand (
   id bigint NOT NULL AUTO_INCREMENT,
@@ -94,12 +94,12 @@ CREATE TABLE brand (
   deleted tinyint(1) NOT NULL DEFAULT 0,
   created_at datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   created_by bigint DEFAULT NULL,
-  updated_at datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  updated_at datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   updated_by bigint DEFAULT NULL,
   PRIMARY KEY (id),
   UNIQUE KEY uk_brand_name_deleted (name, deleted),
   KEY idx_brand_name (name)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+);
 
 CREATE TABLE product_category (
   id bigint NOT NULL AUTO_INCREMENT,
@@ -111,13 +111,13 @@ CREATE TABLE product_category (
   deleted tinyint(1) NOT NULL DEFAULT 0,
   created_at datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   created_by bigint DEFAULT NULL,
-  updated_at datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  updated_at datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   updated_by bigint DEFAULT NULL,
   PRIMARY KEY (id),
   UNIQUE KEY uk_product_category_parent_id_name_deleted (parent_id, name, deleted),
   KEY idx_product_category_parent_id (parent_id),
   CONSTRAINT fk_product_category_parent_id FOREIGN KEY (parent_id) REFERENCES product_category (id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+);
 
 CREATE TABLE product (
   id bigint NOT NULL AUTO_INCREMENT,
@@ -130,7 +130,7 @@ CREATE TABLE product (
   deleted tinyint(1) NOT NULL DEFAULT 0,
   created_at datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   created_by bigint DEFAULT NULL,
-  updated_at datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  updated_at datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   updated_by bigint DEFAULT NULL,
   PRIMARY KEY (id),
   UNIQUE KEY uk_product_spu_code_deleted (spu_code, deleted),
@@ -139,7 +139,7 @@ CREATE TABLE product (
   KEY idx_product_brand_id (brand_id),
   CONSTRAINT fk_product_category_id FOREIGN KEY (category_id) REFERENCES product_category (id),
   CONSTRAINT fk_product_brand_id FOREIGN KEY (brand_id) REFERENCES brand (id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+);
 
 CREATE TABLE product_sku (
   id bigint NOT NULL AUTO_INCREMENT,
@@ -154,7 +154,7 @@ CREATE TABLE product_sku (
   deleted tinyint(1) NOT NULL DEFAULT 0,
   created_at datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   created_by bigint DEFAULT NULL,
-  updated_at datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  updated_at datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   updated_by bigint DEFAULT NULL,
   PRIMARY KEY (id),
   UNIQUE KEY uk_product_sku_sku_code_deleted (sku_code, deleted),
@@ -162,7 +162,7 @@ CREATE TABLE product_sku (
   KEY idx_product_sku_barcode (barcode),
   KEY idx_product_sku_name (name),
   CONSTRAINT fk_product_sku_product_id FOREIGN KEY (product_id) REFERENCES product (id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+);
 
 CREATE TABLE customer (
   id bigint NOT NULL AUTO_INCREMENT,
@@ -174,13 +174,13 @@ CREATE TABLE customer (
   deleted tinyint(1) NOT NULL DEFAULT 0,
   created_at datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   created_by bigint DEFAULT NULL,
-  updated_at datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  updated_at datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   updated_by bigint DEFAULT NULL,
   PRIMARY KEY (id),
   UNIQUE KEY uk_customer_name_deleted (name, deleted),
   KEY idx_customer_phone (phone),
   KEY idx_customer_name (name)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+);
 
 CREATE TABLE supplier (
   id bigint NOT NULL AUTO_INCREMENT,
@@ -192,13 +192,13 @@ CREATE TABLE supplier (
   deleted tinyint(1) NOT NULL DEFAULT 0,
   created_at datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   created_by bigint DEFAULT NULL,
-  updated_at datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  updated_at datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   updated_by bigint DEFAULT NULL,
   PRIMARY KEY (id),
   UNIQUE KEY uk_supplier_name_deleted (name, deleted),
   KEY idx_supplier_phone (phone),
   KEY idx_supplier_name (name)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+);
 
 CREATE TABLE warehouse (
   id bigint NOT NULL AUTO_INCREMENT,
@@ -211,11 +211,11 @@ CREATE TABLE warehouse (
   deleted tinyint(1) NOT NULL DEFAULT 0,
   created_at datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   created_by bigint DEFAULT NULL,
-  updated_at datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  updated_at datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   updated_by bigint DEFAULT NULL,
   PRIMARY KEY (id),
   UNIQUE KEY uk_warehouse_code_deleted (code, deleted),
   KEY idx_warehouse_name (name)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+);
 
 SET FOREIGN_KEY_CHECKS = 1;
