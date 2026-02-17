@@ -1,0 +1,25 @@
+sequenceDiagram
+    actor User
+    participant Browser as Vue Frontend
+    participant Router as Vue Router Guard
+    participant Store as Pinia Auth Store
+    participant Axios as Axios HTTP
+    participant Filter as Security Filter
+    participant Controller as AuthController
+    participant JWT as JWT Util
+    participant DB as Database
+
+    User->>Browser: Enter username/password
+    Browser->>Store: login(username, password)
+    Store->>Axios: POST /api/auth/login
+    Axios->>Filter: HTTP Request
+    Filter->>Controller: pass to handler
+    Controller->>DB: query sys_user
+    DB-->>Controller: user record
+    Controller->>JWT: generateToken(user)
+    JWT-->>Controller: JWT token
+    Controller-->>Axios: ApiResponse(token, user info)
+    Axios-->>Store: save token to localStorage
+    Store-->>Router: auth state updated
+    Router-->>Browser: redirect to /dashboard
+    Browser-->>User: show Dashboard

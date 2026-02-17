@@ -1,0 +1,28 @@
+sequenceDiagram
+    actor Admin
+    participant UI as Vue Frontend
+    participant PO_API as PurchaseOrder API
+    participant SI_API as StockIn API
+    participant INV as Inventory Service
+    participant DB as Database
+
+    Admin->>UI: Create Purchase Order
+    UI->>PO_API: POST /api/purchase-orders
+    PO_API->>DB: INSERT purchase_order + items
+    DB-->>PO_API: order_no = PO20260217001
+    PO_API-->>UI: order created (PENDING)
+
+    Admin->>UI: Trigger Receive Goods
+    UI->>PO_API: POST /api/purchase-orders/{id}/receive
+    PO_API->>SI_API: create stock_in record
+    SI_API->>DB: INSERT stock_in + items
+    SI_API->>INV: updateStock(warehouse, sku, qty)
+    INV->>DB: UPDATE inventory_stock SET quantity += qty
+    INV->>DB: INSERT inventory_movement (type=IN)
+    DB-->>INV: done
+    INV-->>SI_API: stock updated
+    SI_API->>DB: UPDATE stock_in status = RECEIVED
+    SI_API->>PO_API: receive done
+    PO_API->>DB: UPDATE purchase_order status = RECEIVED
+    PO_API-->>UI: order received
+    UI-->>Admin: show success

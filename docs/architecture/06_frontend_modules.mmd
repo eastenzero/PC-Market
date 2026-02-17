@@ -1,0 +1,132 @@
+graph LR
+    subgraph "App Shell"
+        AppVue["App.vue"]
+        Router["router/index.ts"]
+        AdminLayout["AdminLayout.vue"]
+    end
+
+    subgraph "Auth"
+        Login["Login.vue"]
+        Dashboard["Dashboard.vue"]
+        AuthStore["stores/auth.ts"]
+        AuthAPI["api/auth.ts"]
+    end
+
+    subgraph "Product Views"
+        BrandList["BrandList.vue"]
+        CategoryList["CategoryList.vue"]
+        ProductList["ProductList.vue"]
+        SkuList["SkuList.vue"]
+    end
+
+    subgraph "Product APIs"
+        BrandAPI["api/brand.ts"]
+        CategoryAPI["api/category.ts"]
+        ProductAPI["api/product.ts"]
+        SkuAPI["api/sku.ts"]
+    end
+
+    subgraph "Inventory Views"
+        WarehouseList["WarehouseList.vue"]
+        StockList["StockList.vue"]
+        StockInbound["StockInbound.vue"]
+        StockOutbound["StockOutbound.vue"]
+        StockMovements["StockMovements.vue"]
+    end
+
+    subgraph "Inventory APIs"
+        WarehouseAPI["api/warehouse.ts"]
+        StockAPI["api/stock.ts"]
+    end
+
+    subgraph "Order Views"
+        PurchaseOrderList["PurchaseOrderList.vue"]
+        SalesOrderList["SalesOrderList.vue"]
+    end
+
+    subgraph "Order APIs"
+        PurchaseAPI["api/purchaseOrder.ts"]
+        SalesAPI["api/salesOrder.ts"]
+    end
+
+    subgraph "Partner Views"
+        SupplierList["SupplierList.vue"]
+        CustomerList["CustomerList.vue"]
+    end
+
+    subgraph "Partner APIs"
+        SupplierAPI["api/supplier.ts"]
+        CustomerAPI["api/customer.ts"]
+    end
+
+    subgraph "System Views"
+        UserList["UserList.vue"]
+        RoleList["RoleList.vue"]
+    end
+
+    subgraph "System APIs"
+        SystemUserAPI["api/systemUser.ts"]
+        SystemRoleAPI["api/systemRole.ts"]
+    end
+
+    subgraph "Shared"
+        HTTP["api/http.ts (Axios)"]
+        Types["types/*.ts"]
+        ElementPlus["Element Plus"]
+    end
+
+    AppVue --> Router
+    Router --> AdminLayout
+    Router --> Login
+    AdminLayout --> Dashboard
+    AdminLayout --> BrandList
+    AdminLayout --> CategoryList
+    AdminLayout --> ProductList
+    AdminLayout --> SkuList
+    AdminLayout --> WarehouseList
+    AdminLayout --> StockList
+    AdminLayout --> StockInbound
+    AdminLayout --> StockOutbound
+    AdminLayout --> StockMovements
+    AdminLayout --> PurchaseOrderList
+    AdminLayout --> SalesOrderList
+    AdminLayout --> SupplierList
+    AdminLayout --> CustomerList
+    AdminLayout --> UserList
+    AdminLayout --> RoleList
+
+    BrandList --> BrandAPI
+    CategoryList --> CategoryAPI
+    ProductList --> ProductAPI
+    SkuList --> SkuAPI
+    WarehouseList --> WarehouseAPI
+    StockList --> StockAPI
+    StockInbound --> StockAPI
+    StockOutbound --> StockAPI
+    StockMovements --> StockAPI
+    PurchaseOrderList --> PurchaseAPI
+    SalesOrderList --> SalesAPI
+    SupplierList --> SupplierAPI
+    CustomerList --> CustomerAPI
+    UserList --> SystemUserAPI
+    RoleList --> SystemRoleAPI
+    Login --> AuthAPI
+    Dashboard --> AuthAPI
+
+    BrandAPI --> HTTP
+    CategoryAPI --> HTTP
+    ProductAPI --> HTTP
+    SkuAPI --> HTTP
+    WarehouseAPI --> HTTP
+    StockAPI --> HTTP
+    PurchaseAPI --> HTTP
+    SalesAPI --> HTTP
+    SupplierAPI --> HTTP
+    CustomerAPI --> HTTP
+    SystemUserAPI --> HTTP
+    SystemRoleAPI --> HTTP
+    AuthAPI --> HTTP
+
+    style AdminLayout fill:#409EFF,color:#fff
+    style HTTP fill:#67C23A,color:#fff
+    style Router fill:#E6A23C,color:#fff

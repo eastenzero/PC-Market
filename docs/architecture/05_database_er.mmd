@@ -1,0 +1,98 @@
+erDiagram
+    sys_user ||--o{ sys_user_role : has
+    sys_role ||--o{ sys_user_role : has
+    sys_role ||--o{ sys_role_permission : has
+    sys_permission ||--o{ sys_role_permission : has
+    sys_permission ||--o{ sys_permission : "parent"
+
+    brand ||--o{ product : has
+    product_category ||--o{ product : has
+    product_category ||--o{ product_category : "parent"
+    product ||--o{ product_sku : has
+
+    product_sku ||--o{ inventory_stock : stored_in
+    warehouse ||--o{ inventory_stock : contains
+    product_sku ||--o{ inventory_movement : tracked_by
+    warehouse ||--o{ inventory_movement : tracked_in
+
+    supplier ||--o{ purchase_order : supplies
+    purchase_order ||--o{ purchase_order_item : contains
+    product_sku ||--o{ purchase_order_item : ordered
+    purchase_order ||--o| stock_in : triggers
+    warehouse ||--o{ stock_in : receives_to
+    stock_in ||--o{ stock_in_item : contains
+    product_sku ||--o{ stock_in_item : received
+
+    customer ||--o{ sales_order : buys
+    sales_order ||--o{ sales_order_item : contains
+    product_sku ||--o{ sales_order_item : sold
+    sales_order ||--o| stock_out : triggers
+    warehouse ||--o{ stock_out : ships_from
+    stock_out ||--o{ stock_out_item : contains
+    product_sku ||--o{ stock_out_item : shipped
+    sales_order ||--o{ payment_record : paid_via
+
+    sys_user {
+        bigint id PK
+        varchar username UK
+        varchar password
+        varchar nickname
+        tinyint status
+    }
+    sys_role {
+        bigint id PK
+        varchar code UK
+        varchar name
+    }
+    brand {
+        bigint id PK
+        varchar name UK
+        tinyint status
+    }
+    product {
+        bigint id PK
+        varchar spu_code UK
+        varchar name
+        bigint category_id FK
+        bigint brand_id FK
+    }
+    product_sku {
+        bigint id PK
+        varchar sku_code UK
+        varchar name
+        decimal price
+        decimal cost
+        bigint product_id FK
+    }
+    warehouse {
+        bigint id PK
+        varchar code UK
+        varchar name
+    }
+    inventory_stock {
+        bigint id PK
+        bigint warehouse_id FK
+        bigint sku_id FK
+        int quantity
+        int version
+    }
+    purchase_order {
+        bigint id PK
+        varchar order_no UK
+        bigint supplier_id FK
+        tinyint status
+        decimal total_amount
+    }
+    sales_order {
+        bigint id PK
+        varchar order_no UK
+        bigint customer_id FK
+        tinyint status
+        decimal total_amount
+    }
+    audit_log {
+        bigint id PK
+        varchar module
+        varchar action
+        json detail_json
+    }

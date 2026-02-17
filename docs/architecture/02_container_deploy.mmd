@@ -1,0 +1,37 @@
+graph TB
+    subgraph "Presentation Tier"
+        Browser["Client Browser"]
+        Frontend["Vue 3 + Element Plus<br/>Vite Dev Server (15175)"]
+    end
+
+    subgraph "Application Tier"
+        Backend["Spring Boot 3 Backend (18083/8080)"]
+        Auth["Auth/JWT Module"]
+        Product["Product Service<br/>(Brand/Category/SPU/SKU)"]
+        Inventory["Inventory Service<br/>(Warehouse/Stock/Movement)"]
+        Purchase["Purchase Order Service"]
+        Sales["Sales Order Service<br/>(Payment/Shipping)"]
+        Partner["Partner Service<br/>(Supplier/Customer)"]
+        System["System Management<br/>(User/Role/Permission)"]
+    end
+
+    subgraph "Data Tier"
+        MySQL["MySQL 8 / H2"]
+        Flyway["Flyway Migrations"]
+    end
+
+    Browser --> Frontend
+    Frontend -->|"HTTP/REST /api/*"| Backend
+    Backend --> Auth
+    Backend --> Product
+    Backend --> Inventory
+    Backend --> Purchase
+    Backend --> Sales
+    Backend --> Partner
+    Backend --> System
+    Backend --> MySQL
+    Flyway --> MySQL
+
+    style Frontend fill:#409EFF,color:#fff
+    style Backend fill:#67C23A,color:#fff
+    style MySQL fill:#E6A23C,color:#fff
